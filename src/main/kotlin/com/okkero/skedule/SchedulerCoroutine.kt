@@ -175,13 +175,12 @@ private class RepetitionContinuation(val resume: (Long) -> Unit, val delay: Long
     private var resumed = false
 
     fun tryResume(passedTicks: Long) {
-        if (resumed) {
-            throw IllegalStateException("Already resumed")
-        }
-        this.passedTicks += passedTicks
-        if (this.passedTicks >= delay) {
-            resumed = true
-            resume(this.passedTicks)
+        if (!resumed) {
+            this.passedTicks += passedTicks
+            if (this.passedTicks >= delay) {
+                resumed = true
+                resume(this.passedTicks)
+            }
         }
     }
 
